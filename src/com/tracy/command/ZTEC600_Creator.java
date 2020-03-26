@@ -16,7 +16,7 @@ public class ZTEC600_Creator {
 
     /**
      * function: 生成GPON脚本
-     *
+     * update by : linsong.wei  2019-03-13
      * @param slot       槽位
      * @param port       端口
      * @param cover_vlan 外层VLAN号
@@ -282,7 +282,8 @@ public class ZTEC600_Creator {
         List<String> loidList = ReadIn("F:\\a\\loid.txt");
         List<String> descList = ReadIn("F:\\a\\desc.txt");
 
-        CreateC600GPON(3, 2, 2504, 359, 41,loidList,descList);
+//        CreateC600GPON(3, 2, 2504, 359, 41,loidList,descList);
+        CreateC600GPONV2(3,8,2504,990,8,loidList,descList);
 
 //        CreateC600EPON(12, 3, 2300, 440, 40);
     }
