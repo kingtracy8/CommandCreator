@@ -16,7 +16,7 @@ public class ReadFormTXT {
     public static List<String> ReadIn(String filePath) {
 
 
-        List<String> dataList = new ArrayList<>();
+        List<String> dataList = new ArrayList<String>();
 
         try {
             //从文件路径读取txt，构建缓冲流
