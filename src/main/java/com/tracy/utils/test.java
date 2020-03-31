@@ -1,7 +1,5 @@
 package com.tracy.utils;
 
-import com.spire.xls.CellRange;
-import com.spire.xls.FileFormat;
 import com.spire.xls.Workbook;
 import com.spire.xls.Worksheet;
 
@@ -10,8 +8,49 @@ import com.spire.xls.Worksheet;
  */
 public class test {
 
+
+
+
+    /**
+     * 读取短信、OA通报
+     */
+    public static void printResult() {
+
+        Workbook workbook = new Workbook();
+//        workbook.loadFromFile("E:\\work\\2020年\\2020年3月\\流量日报\\0225\\接入层流量预警清单（报表整理）0225.xlsx");
+        workbook.loadFromFile("F:\\Datareport\\流量汇总表.xlsx");
+
+        Worksheet worksheet = workbook.getWorksheets().get(1);
+
+        String Msg = worksheet.get(17, 1).getText();
+        System.out.println(Msg);
+
+
+        //getEnvalutedValue()为提取公式计算后的值
+        String MsgContent = worksheet.get(18, 1).getEnvalutedValue();
+        System.out.println(MsgContent);
+        System.out.println();
+
+        String totalDSW = worksheet.get(10,2).getEnvalutedValue();
+        System.out.println("合计"+totalDSW);
+//        System.out.println(worksheet.get(21, 1).getEnvalutedValue());
+//        String City =worksheet.get(22, 1).getEnvalutedValue();
+//        System.out.println(City);
+//        String CountySide = String.valueOf(worksheet.get(24, 1).getEnvalutedValue());
+//        System.out.println(CountySide);
+
+
+    }
+
+
     public static void main(String[] args) {
-        //加载文档
+
+
+
+        printResult();
+
+
+       /* //加载文档
         Workbook wb = new Workbook();
         wb.loadFromFile("C:\\Users\\trcay\\Desktop\\0327\\test.xlsx");
 
@@ -37,6 +76,6 @@ public class test {
         System.out.println(cout);
 
         //保存文档
-        wb.saveToFile("C:\\Users\\trcay\\Desktop\\0327\\CopyRange.xlsx", FileFormat.Version2013);
+        wb.saveToFile("C:\\Users\\trcay\\Desktop\\0327\\CopyRange.xlsx", FileFormat.Version2013);*/
     }
 }

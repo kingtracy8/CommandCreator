@@ -15,6 +15,41 @@ import com.spire.xls.Worksheet;
 public class ExcelCURD {
 
 
+    /**
+     * 将OLT报表的格式另存为xlsx格式
+     */
+    public static void ConverOLTXlsToXLSX() {
+
+        Workbook wb = new Workbook();
+        System.out.println("加载OLT流量报表....");
+        wb.loadFromFile("F:\\Datareport\\OLT.xls");
+
+        Worksheet sheet = wb.getWorksheets().get(0);
+        sheet.saveToFile("F:\\Datareport\\OLT.xlsx", String.valueOf(FileFormat.Version2013));
+
+        System.out.println("OLT流量报表格式转换成xlsx....");
+
+//        wb.saveToFile("F:\\Datareport\\OLT.xlsx");
+//        wb.dispose();
+//        System.out.println("OLT流量报表格式转换成xlsx....");
+
+    }
+
+
+    public static void ConverDSWXlsToXLSX() {
+
+        Workbook wb = new Workbook();
+        System.out.println("加载汇聚交换机流量报表....");
+        wb.loadFromFile("F:\\Datareport\\DSW.xls");
+
+
+        wb.saveToFile("F:\\Datareport\\DSW.xlsx");
+        wb.dispose();
+        System.out.println("汇聚交换机流量报表格式转换成xlsx....");
+
+    }
+
+
     /***
      * 删除不需要的列，保留需要的“峰值流出流速(Mbit/s)等需要的信息”
      */
@@ -115,7 +150,7 @@ public class ExcelCURD {
 
         //加载流量报表，获取第6张工作表，并将OLT中的工作表内容复制到该工作表（OLT流量为第六张，索引为5）
         Workbook wb = new Workbook();
-        wb.loadFromFile("F:\\Datareport\\接入层流量预警清单（报表整理）0330.xlsx");
+        wb.loadFromFile("F:\\Datareport\\接入层流量预警清单（底表）.xlsx");
         Worksheet sheetAll = wb.getWorksheets().get(5);
         System.out.println("将OLT流量报表迁移到总表....");
         sheetAll.copyFrom(sheetOlt);
@@ -190,15 +225,13 @@ public class ExcelCURD {
         wb.saveToFile("F:\\Datareport\\拷贝后流量报表.xlsx", FileFormat.Version2013);
 
 
-
-
     }
 
 
     /**
      * 最终整合方法，将交换机的流量拷贝到正确的位置，保持原有公式
      */
-    public static void IntegratingReport(){
+    public static void IntegratingReport() {
 
 
         //将总表的最后一张sheet，也就是汇聚交换机流量数据 复制到 原 汇聚交换机流量 有公式的那一页
@@ -218,7 +251,9 @@ public class ExcelCURD {
 
         System.out.println("开始最后整合....");
 
-        Copyedsheet.copy(sourceRange, destRange, true);
+        //false为不保留源数据的格式，用目标数据格式，true则相反
+
+        Copyedsheet.copy(sourceRange, destRange, false);
 
 
         wbFinal.saveToFile("F:\\Datareport\\流量汇总表.xlsx", FileFormat.Version2013);
@@ -229,12 +264,47 @@ public class ExcelCURD {
 
     }
 
+    /**
+     * 读取短信、OA通报
+     */
+    public static void printResult() {
+
+
+//        System.out.println("Spire方式读取短信和 OA通报");
+
+        Workbook workbook = new Workbook();
+        workbook.loadFromFile("F:\\Datareport\\流量汇总表.xlsx");
+
+        Worksheet worksheet = workbook.getWorksheets().get(1);
+
+        String Msg = worksheet.get(17, 1).getText();
+        System.out.println(Msg);
+
+
+        //getEnvalutedValue()为提取公式计算后的值
+        String MsgContent = worksheet.get(18, 1).getEnvalutedValue();
+        System.out.println(MsgContent);
+        System.out.println();
+        System.out.println(String.valueOf(worksheet.get(21, 1).getEnvalutedValue()));
+        String City = String.valueOf(worksheet.get(22, 1).getEnvalutedValue());
+        System.out.println(City);
+        String CountySide = String.valueOf(worksheet.get(24, 1).getEnvalutedValue());
+        System.out.println(CountySide);
+
+    }
 
 
     public static void main(String[] args) {
 
+        //转换OLT报表格式成为XLSX,还是200行
+//        ConverOLTXlsToXLSX();
+
+        //转换DSW报表格式成为XLSX
+//        ConverDSWXlsToXLSX();
+
         //提取和整理OLT流量报表格式
         deleteOLTCol();
+
         //提取整理交换机报表格式
         deleteDswCol();
 
@@ -246,6 +316,14 @@ public class ExcelCURD {
 
         //最终整合
         IntegratingReport();
+
+
+        //spire方式读取短信和OA内容  正确读时间，但无法正确读出公式的计算值
+//        printResult();
+
+        //尝试用POI方式读取，正确读出公式的计算值，但无法正确读出时间
+        ExtractOA_MSG.printResultForPOI();
+
     }
 
 }
