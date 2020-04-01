@@ -48,6 +48,10 @@ public class ExtractOA_MSG {
 
             Sheet sheet = workbook.getSheetAt(1);
 
+
+
+
+
             //获得短信头的cell
             int MsgIndex = 16;
             Row MsgRow = sheet.getRow(MsgIndex);
@@ -68,6 +72,19 @@ public class ExtractOA_MSG {
             Row OARow = sheet.getRow(OAIndex);
             Cell OA = OARow.getCell(0);
             System.out.println(OA.getStringCellValue());
+
+            System.out.println();
+
+            String IPRANReport = "2、接入层扩容与IPRAN成环情况：\n" +
+                    "（1）上周完成情况：\n" +
+                    " ①已完成：\n" +
+                    "   接入层扩容情况:无；\n" +
+                    "   IPRAN成环情况：无；\n" +
+                    " ②未完成：\n" +
+                    "   接入层扩容情况:无；\n" +
+                    "   IPRAN成环情况：无；";
+
+            System.out.println(IPRANReport);
 
 
             //获得OA （2）的cell
@@ -101,6 +118,9 @@ public class ExtractOA_MSG {
                 System.out.println(cell.getStringCellValue());
             }
             */
+
+
+            System.out.println(" ③本周已完成：无。");
 
 
         } catch (Exception e) {

@@ -302,6 +302,9 @@ public class ExcelCURD {
         //转换DSW报表格式成为XLSX
 //        ConverDSWXlsToXLSX();
 
+        //从网管下载DSW.xls，需登陆系统生成报表
+        GetDSWReportUtils.downloadDSWReport();
+
         //提取和整理OLT流量报表格式
         deleteOLTCol();
 
