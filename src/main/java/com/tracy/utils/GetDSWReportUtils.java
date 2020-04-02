@@ -41,8 +41,10 @@ public class GetDSWReportUtils {
         url = url.append(RPT);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_");
+        //获得日期的前一天，因为每天的报表导出的是前一天的流量
+        Date reportDate = getBeforeDay();
 
-        String dateString = format.format(new Date());
+        String dateString = format.format(reportDate);
 
         url = url.append(dateString);
         url = url.append(dateString);
@@ -61,10 +63,27 @@ public class GetDSWReportUtils {
 
     }
 
+
+    /**
+     * 获得今天的前一天的日期
+     *
+     * @return 返回前一天的指定格式
+     */
+    public static Date getBeforeDay() {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date day = new Date();
+        long ms = day.getTime() - 1 * 24 * 3600 * 1000L;
+        Date prevDay = new Date(ms);
+        System.out.println(format.format(prevDay));
+        return prevDay;
+    }
+
+
     /**
      * 构造URL并下载DSW报表
      */
-    public static void downloadDSWReport(){
+    public static void downloadDSWReport() {
 
 
         String url = getURL();
