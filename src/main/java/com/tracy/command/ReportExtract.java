@@ -22,7 +22,10 @@ public class ReportExtract {
     public static void main(String[] args) {
 
         // 设定Excel文件所在路径
-        String excelFileName = "E:\\test\\DSW.xls";
+        String excelFileName = "F:\\Datareport\\DSW.xls";
+
+        System.out.println("开始读取DSW.xls的数据并写入DSW.xlsx...");
+
         // 读取Excel文件内容
         List<DswExcelDataVO> readResult = ExcelReader.readExcel(excelFileName);
 
@@ -35,7 +38,7 @@ public class ReportExtract {
         // 以文件的形式输出工作簿对象
         FileOutputStream fileOut = null;
         try {
-            String exportFilePath = "E:\\test\\DSW.xlsx";
+            String exportFilePath = "F:\\Datareport\\DSW.xlsx";
             File exportFile = new File(exportFilePath);
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
@@ -44,7 +47,7 @@ public class ReportExtract {
             fileOut = new FileOutputStream(exportFilePath);
             workbook.write(fileOut);
             fileOut.flush();
-            System.out.println("输出成功，文件位置：E:\\test\\DSW.xlsx");
+            System.out.println("输出成功，文件位置：F:\\Datareport\\DSW.xlsx");
         } catch (Exception e) {
             logger.warning("输出Excel时发生错误，错误原因：" + e.getMessage());
         } finally {

@@ -5,6 +5,7 @@ import com.spire.xls.CellRange;
 import com.spire.xls.FileFormat;
 import com.spire.xls.Workbook;
 import com.spire.xls.Worksheet;
+import com.tracy.command.ReportExtract;
 
 /**
  * Created by trcay on 2020/3/29.
@@ -17,6 +18,7 @@ public class ExcelCURD {
 
     /**
      * 将OLT报表的格式另存为xlsx格式
+     * 已弃用，加载xls文件只能操作200行
      */
     public static void ConverOLTXlsToXLSX() {
 
@@ -35,7 +37,9 @@ public class ExcelCURD {
 
     }
 
-
+    /**
+     * 已弃用，加载xls文件只能操作200行
+     */
     public static void ConverDSWXlsToXLSX() {
 
         Workbook wb = new Workbook();
@@ -72,6 +76,10 @@ public class ExcelCURD {
         System.out.println("OLT流量报表格式整理完成....");
     }
 
+
+    /**
+     * 已弃用
+     */
     public static void deleteDswCol() {
 
         Workbook wb = new Workbook();
@@ -103,6 +111,7 @@ public class ExcelCURD {
 
     /**
      * 由于原表里 平均流出流速 和 平均日峰值流出利用率 是反过来的，所以需要将这两列互换
+     * 已弃用  linsong_wei@163.com  2020.04.04  因直接使用poi方式读取DSW.xls，再写入DSW.xlsx，所以不需要再排序
      */
     public static void RotateCol() {
 
@@ -117,16 +126,16 @@ public class ExcelCURD {
         Integer count = sheet.getLastRow();
 
         //复制指定单元格范围中的数据,此处是赋值第7列到第9列
-        CellRange range1 = sheet.getCellRange(5, 7, count, 7);
-        CellRange range2 = sheet.getCellRange(5, 9, count, 9);
+        CellRange range1 = sheet.getCellRange(2, 7, count, 7);
+        CellRange range2 = sheet.getCellRange(2, 9, count, 9);
         sheet.copy(range1, range2, true);
         //把第8列弄到第7列
-        CellRange range3 = sheet.getCellRange(5, 8, count, 8);
-        CellRange range4 = sheet.getCellRange(5, 7, count, 7);
+        CellRange range3 = sheet.getCellRange(2, 8, count, 8);
+        CellRange range4 = sheet.getCellRange(2, 7, count, 7);
         sheet.copy(range3, range4, true);
         //把第9列弄到第8列 即完成替换
-        CellRange range5 = sheet.getCellRange(5, 9, count, 9);
-        CellRange range6 = sheet.getCellRange(5, 8, count, 8);
+        CellRange range5 = sheet.getCellRange(2, 9, count, 9);
+        CellRange range6 = sheet.getCellRange(2, 8, count, 8);
         sheet.copy(range5, range6, true);
 
         //把多余的列删除
@@ -164,6 +173,9 @@ public class ExcelCURD {
 
     //TODO：可能是表头不一样的问题，待处理
 
+    /**
+     * 已弃用
+     */
     public static void CopyDSWToReport() {
 
 
@@ -206,7 +218,8 @@ public class ExcelCURD {
 
         //加载汇聚交换机报表，并获取第一张工作簿
         Workbook wbOlt = new Workbook();
-        wbOlt.loadFromFile("F:\\Datareport\\汇聚交换机流量报表.xlsx");
+//        wbOlt.loadFromFile("F:\\Datareport\\汇聚交换机流量报表.xlsx");
+        wbOlt.loadFromFile("F:\\Datareport\\DSW.xlsx");
         Worksheet sheetOlt = wbOlt.getWorksheets().get(0);
 
         //加载加载整合过OLT报表后的总表,并新增一张sheet用来存放汇聚交换机流量
@@ -214,12 +227,12 @@ public class ExcelCURD {
         wb.loadFromFile("F:\\Datareport\\整合OLT后流量报表.xlsx");
         Worksheet cpoysheet = wb.createEmptySheet();
 
-        System.out.println("将汇聚交换机报表的内容拷贝到总表....");
+        System.out.println("将汇聚交换机报表的内容拷贝到总表....\n");
 
         //将汇聚交换机报表的内容拷贝到总表的最后一张sheet
         cpoysheet.copyFrom(sheetOlt);
 
-        System.out.println("汇聚交换机报表的内容拷贝到总表完成....");
+        System.out.println("汇聚交换机报表的内容拷贝到总表完成....\n");
 
         //保存文档
         wb.saveToFile("F:\\Datareport\\拷贝后流量报表.xlsx", FileFormat.Version2013);
@@ -245,11 +258,11 @@ public class ExcelCURD {
         //获得行数
         Integer count = Copyedsheet.getLastRow();
 
-        //表头不同，从第5行开始复制
-        CellRange sourceRange = Copyedsheet.getCellRange(5, 1, count, 8);
+        //表头不复制，从第2行开始复制
+        CellRange sourceRange = Copyedsheet.getCellRange(2, 1, count, 8);
         CellRange destRange = FinalDSWsheet.getCellRange(2, 1, count, 8);
 
-        System.out.println("开始最后整合....");
+        System.out.println("开始最后整合....\n");
 
         //false为不保留源数据的格式，用目标数据格式，true则相反
 
@@ -266,6 +279,7 @@ public class ExcelCURD {
 
     /**
      * 读取短信、OA通报
+     * 已弃用  linsong_wei@163.com  2020.04.01
      */
     public static void printResult() {
 
@@ -305,11 +319,16 @@ public class ExcelCURD {
         //从网管下载DSW.xls，需登陆系统生成报表
 //        GetDSWReportUtils.downloadDSWReport();
 
+        //把DSW.xls读出来，再写进DSW.xlsx,  由于此处已经读出需要的数值，所以deleteDswCol()方法被弃用，即读写出来后的DSW报表格式与底表的格式、排列已经相同
+        ReportExtract.main(null);
+
         //提取和整理OLT流量报表格式
         deleteOLTCol();
 
         //提取整理交换机报表格式
-        deleteDswCol();
+        //已弃用  linsong_wei@163.com  2020.04.04  16:38
+        //由于ReportExtract已经将DSW.xls转换成DSW.xlsx，所以该方法被弃用，即DSW.xlsx报表格式与底表的格式、排列已经相同,可直接调用CopyDSWSheetToReport()方法拷贝到总表
+//        deleteDswCol();
 
         //把OLT报表导入总表
         CopyOLTToReport();

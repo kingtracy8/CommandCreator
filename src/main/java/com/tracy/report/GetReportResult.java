@@ -1,5 +1,6 @@
-package com.tracy.utils;
+package com.tracy.report;
 
+import com.tracy.utils.ExcelReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -10,7 +11,7 @@ import java.util.logging.Logger;
 
 import static com.tracy.utils.ExcelReader.getWorkbook;
 
-public class ExtractOA_MSG {
+public class GetReportResult {
 
     private static Logger logger = Logger.getLogger(ExcelReader.class.getName()); // 日志打印类
     private static final String XLS = "xls";
@@ -21,9 +22,6 @@ public class ExtractOA_MSG {
      * 使用POI方式 读取短信、OA通报
      */
     public static void printResultForPOI() {
-
-
-//        System.out.println("POI方式读取短信和 OA通报");
 
 
         String fileName = "F:\\Datareport\\流量汇总表.xlsx";
@@ -47,8 +45,6 @@ public class ExtractOA_MSG {
             //获得第二张工作表
 
             Sheet sheet = workbook.getSheetAt(1);
-
-
 
 
 
@@ -106,20 +102,6 @@ public class ExtractOA_MSG {
             Cell OACountryContent = OACountryRow.getCell(0);
             System.out.println(OACountryContent.getStringCellValue());
 
-
-
-            /*
-            if (null == MsgContentRow) {
-                logger.warning("解析Excel失败，在第一行没有读取到任何数据！");
-            }else {
-
-                Cell cell;
-                cell = MsgContentRow.getCell(0);
-                System.out.println(cell.getStringCellValue());
-            }
-            */
-
-
             System.out.println(" ③本周已完成：无。");
 
 
@@ -143,8 +125,6 @@ public class ExtractOA_MSG {
 
 
     public static void main(String[] args) {
-
-
 
         printResultForPOI();
     }
