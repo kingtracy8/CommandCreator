@@ -1,10 +1,10 @@
 package com.tracy.utils;
 
 import com.tracy.dao.DswExcelDataVO;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,11 +41,11 @@ public class ExcelWriter {
 
 
         // 生成xlsx的Excel
-        // Workbook workbook = new SXSSFWorkbook();
+         Workbook workbook = new SXSSFWorkbook();
 
         // 如需生成xls的Excel，请使用下面的工作簿对象，注意后续输出时文件后缀名也需更改为xls
 
-        Workbook workbook = new HSSFWorkbook();
+//        Workbook workbook = new HSSFWorkbook();
 
         // 生成Sheet表，写入第一行的列头
 
@@ -176,11 +176,14 @@ public class ExcelWriter {
         if (null != data.getDayEveOutRatio()) {
 
             //设置成数值格式
-            HSSFCellStyle contextstyle = (HSSFCellStyle) workbook.createCellStyle();
-            HSSFDataFormat df = (HSSFDataFormat) workbook.createDataFormat();
-            contextstyle.setDataFormat(df.getBuiltinFormat("#,##0.00"));
+            XSSFCellStyle contextstyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFDataFormat df = (XSSFDataFormat) workbook.createDataFormat();
+            contextstyle.setDataFormat(df.getFormat("#,##0.00"));
             cell.setCellStyle(contextstyle);
             cell.setCellValue(Double.parseDouble(data.getDayEveOutRatio()));
+
+
+
 
 //            cell.setCellValue(data.getDayEveOutRatio());
         } else {
@@ -192,9 +195,9 @@ public class ExcelWriter {
         cell = row.createCell(cellNum++);
         if (null != data.getEveOutSpeed()) {
 
-            HSSFCellStyle contextstyle = (HSSFCellStyle) workbook.createCellStyle();
-            HSSFDataFormat df = (HSSFDataFormat) workbook.createDataFormat();
-            contextstyle.setDataFormat(df.getBuiltinFormat("#,##0.00"));
+            XSSFCellStyle contextstyle = (XSSFCellStyle) workbook.createCellStyle();
+            XSSFDataFormat df = (XSSFDataFormat) workbook.createDataFormat();
+            contextstyle.setDataFormat(df.getFormat("#,##0.00"));
             cell.setCellStyle(contextstyle);
             cell.setCellValue(Double.parseDouble(data.getEveOutSpeed()));
 //            cell.setCellValue(data.getEveOutSpeed());
